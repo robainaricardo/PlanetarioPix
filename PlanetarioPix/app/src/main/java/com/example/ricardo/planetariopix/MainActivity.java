@@ -86,11 +86,12 @@ public class MainActivity extends AppCompatActivity {
 
             //imViewFoto.setImageBitmap(thumbnail);
 
-            thumbnail = removeFundoVerde(thumbnail);
-            Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.lua_jupter);
-
-            Bitmap pronto = overlay(fundo, thumbnail);
-            imViewFoto.setImageBitmap(pronto);
+            //thumbnail = removeFundoVerde(thumbnail);
+            //Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
+            Intent it = new Intent(this, GaleriaActivity.class);
+            startActivity(it);
+            //Bitmap pronto = overlay(fundo, thumbnail);
+            //imViewFoto.setImageBitmap(pronto);
 
         }
     }
@@ -137,20 +138,24 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static Bitmap overlay(Bitmap bmp1, Bitmap bmp2) {
-        try
-        {
-            Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(),  bmp1.getConfig());
+        try {
+            Bitmap bmOverlay = Bitmap.createBitmap(bmp1.getWidth(), bmp1.getHeight(), bmp1.getConfig());
             Canvas canvas = new Canvas(bmOverlay);
             canvas.drawBitmap(bmp1, new Matrix(), null);
             canvas.drawBitmap(bmp2, 0, 0, null);
             return bmOverlay;
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             // TODO: handle exception
             e.printStackTrace();
             return null;
         }
     }
+
+    public static void chamaTela(){
+
+
+    }
+
 
 
 
