@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btTirarFoto;
     private Button btGaleria;
 
+    public Bitmap semFundo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,73 +91,36 @@ public class MainActivity extends AppCompatActivity {
 
             //imViewFoto.setImageBitmap(thumbnail);
 
-            thumbnail = colorToAlpha(thumbnail);
+            semFundo = colorToAlpha(thumbnail);
             //imViewFoto.setImageBitmap(thumbnail);
-            Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
+            //Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
 
-            //Intent it = new Intent(this, GaleriaActivity.class);
-            //startActivityForResult(it, ACTIVITY_2);
+            Intent it = new Intent(this, GaleriaActivity.class);
+            startActivityForResult(it, ACTIVITY_2);
 
-            Bitmap pronto = overlay(fundo, thumbnail);
-            imViewFoto.setImageBitmap(pronto);
+             //Bitmap pronto = overlay(fundo, thumbnail);
+            //imViewFoto.setImageBitmap(pronto);
 
         } else if(resultCode == RESULT_OK && requestCode == ACTIVITY_2){
             String imagem = data.getStringExtra("IMAGEM");
-            if(imagem == "1"){
+            Toast.makeText(this, "Texto: "+imagem, Toast.LENGTH_SHORT).show();
+
+            if(imagem.equals("1")){
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
-                imViewFoto.setImageBitmap(fundo);
+                Bitmap pronto = overlay(fundo, semFundo);
+                imViewFoto.setImageBitmap(pronto);
             }
-            if(imagem == "2"){
+            if(imagem.equals("2")){
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
-                imViewFoto.setImageBitmap(fundo);
+                Bitmap pronto = overlay(fundo, semFundo);
+                imViewFoto.setImageBitmap(pronto);
             }
-            if(imagem == "3"){
+            if(imagem.equals("3")){
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
-                imViewFoto.setImageBitmap(fundo);
+                Bitmap pronto = overlay(fundo, semFundo);
+                imViewFoto.setImageBitmap(pronto);
             }
         }
-    }
-
-
-
-    public static Bitmap removeFundoVerde(Bitmap srcBitmap){
-        Bitmap result = srcBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        int nWidth = result.getWidth();
-        int nHeight = result.getHeight();
-
-        for (int y = 0; y < nHeight; ++y) {
-            for (int x = 0; x < nWidth; ++x) {
-                int nPixelColor = result.getPixel(x, y);
-                float hsv[] = new float[3];
-
-                Color.colorToHSV(nPixelColor, hsv);
-                if(hsv[0] >= 60 && hsv[0] <= 130 && hsv[1] >= 0.4 && hsv[2] >= 0.3){
-                    result.setPixel(x, y, 0);
-                    //result.eraseColor(Color.TRANSPARENT);
-                }
-
-                //=====================================
-                //FUNÇÂO QUE ARRUMA AS BORDAS DA IMAGEM
-                //=====================================
-                //if(hsv[0] >= 60 && hsv[0] <= 130 && hsv[1] >= 0.15 && hsv[2] > 0.15) {
-                  //  if ((r * b) != 0 && (g * g) / (r * b) >= 1.5) {
-                   //     result.setIntColor(x, y, 255, (int) (r * 1.4), (int) g, (int) (b * 1.4));
-                    //} else {
-                     //   image.setIntColor(x, y, 255, (int) (r * 1.2), g, (int) (b * 1.2));
-                    //}
-            }
-        }
-
-        Bitmap paramBitmap = Bitmap.createBitmap(result.getWidth(), result.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas localObject = new Canvas(paramBitmap);
-        localObject.drawARGB(0, 0, 0, 0);
-        Paint localPaint = new Paint();
-        localPaint.setAlpha(255);
-        localObject.drawBitmap(result, 0.0F, 0.0F, localPaint);
-        //result.eraseColor(Color.TRANSPARENT);
-        return result;
-
-        //return imageWithBG;
     }
 
 
@@ -169,8 +134,7 @@ public class MainActivity extends AppCompatActivity {
         return localBitmap;
     }
 
-    public static Bitmap colorToAlpha(Bitmap paramBitmap)
-    {
+    public static Bitmap colorToAlpha(Bitmap paramBitmap){
         Bitmap localBitmap = paramBitmap.copy(Bitmap.Config.ARGB_8888, true);
         int k = localBitmap.getWidth();
         int m = localBitmap.getHeight();
@@ -190,6 +154,16 @@ public class MainActivity extends AppCompatActivity {
             }
             i += 1;
         }
+        //=====================================
+        //FUNÇÂO QUE ARRUMA AS BORDAS DA IMAGEM
+        //=====================================
+        //if(hsv[0] >= 60 && hsv[0] <= 130 && hsv[1] >= 0.15 && hsv[2] > 0.15) {
+        //  if ((r * b) != 0 && (g * g) / (r * b) >= 1.5) {
+        //     result.setIntColor(x, y, 255, (int) (r * 1.4), (int) g, (int) (b * 1.4));
+        //} else {
+        //   image.setIntColor(x, y, 255, (int) (r * 1.2), g, (int) (b * 1.2));
+        //}
+
         paramBitmap = Bitmap.createBitmap(localBitmap.getWidth(), localBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Object localObject = new Canvas(paramBitmap);
         ((Canvas)localObject).drawARGB(0, 0, 0, 0);

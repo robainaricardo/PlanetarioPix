@@ -31,18 +31,13 @@ public class GaleriaActivity extends AppCompatActivity {
         imb2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //chamar galeria
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("IMAGEM",2);
-                setResult(RESULT_OK,returnIntent);
+                retorno(2);
             }
         });
 
         imb3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //chamar galeria
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("IMAGEM",3);
-                setResult(RESULT_OK,returnIntent);
+                retorno(3);
             }
         });
 
@@ -50,7 +45,8 @@ public class GaleriaActivity extends AppCompatActivity {
 
     void retorno(int imagem){
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("IMAGEM",imagem);
+        returnIntent.putExtra("IMAGEM", ""+imagem);
         setResult(RESULT_OK,returnIntent);
+        finish();
     }
 }
