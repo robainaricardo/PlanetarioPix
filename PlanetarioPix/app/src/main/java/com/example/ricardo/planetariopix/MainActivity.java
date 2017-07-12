@@ -76,8 +76,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            //usar aqui a função de processsamento de imagem
-            imViewFoto.setImageBitmap(imageBitmap);
+            semFundo = colorToAlpha(imageBitmap);
+            Intent it = new Intent(this, GaleriaActivity.class);
+            startActivityForResult(it, ACTIVITY_2);
+
         } else if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGEM) {
             Uri selectedImage = data.getData();
             String[] filePath = {MediaStore.Images.Media.DATA};
@@ -87,21 +89,15 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = c.getString(columnIndex);
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            //usar aqui a função de processsamento de imagem
+            //até aqui é para obter a foto selecionada na galeria
 
-            //imViewFoto.setImageBitmap(thumbnail);
-
+            //tira o fundo da imagem
             semFundo = colorToAlpha(thumbnail);
-            //imViewFoto.setImageBitmap(thumbnail);
-            //Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
 
+            //chama tela para escolha do fundo
             Intent it = new Intent(this, GaleriaActivity.class);
             startActivityForResult(it, ACTIVITY_2);
-
-             //Bitmap pronto = overlay(fundo, thumbnail);
-            //imViewFoto.setImageBitmap(pronto);
-
-        } else if(resultCode == RESULT_OK && requestCode == ACTIVITY_2){
+        } else if(resultCode == RESULT_OK && requestCode == ACTIVITY_2){//retorno da escolha do fundo
             String imagem = data.getStringExtra("IMAGEM");
             Toast.makeText(this, "Texto: "+imagem, Toast.LENGTH_SHORT).show();
 
