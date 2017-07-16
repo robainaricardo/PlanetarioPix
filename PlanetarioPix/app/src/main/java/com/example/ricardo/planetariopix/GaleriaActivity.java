@@ -13,6 +13,8 @@ public class GaleriaActivity extends AppCompatActivity {
     private ImageButton imb2;
     private ImageButton imb3;
     private ImageButton imb4;
+    private ImageButton imb5;
+    private ImageButton imb6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,8 @@ public class GaleriaActivity extends AppCompatActivity {
         ImageButton imb2 = (ImageButton) findViewById(R.id.imb2);
         ImageButton imb3 = (ImageButton) findViewById(R.id.imb3);
         ImageButton imb4 = (ImageButton) findViewById(R.id.imb4);
+        ImageButton imb5 = (ImageButton) findViewById(R.id.imb5);
+        ImageButton imb6 = (ImageButton) findViewById(R.id.imb6);
 
         imb1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -46,6 +50,18 @@ public class GaleriaActivity extends AppCompatActivity {
         imb4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 retorno(4);
+            }
+        });
+
+        imb5.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                retorno(5);
+            }
+        });
+
+        imb6.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                retorno(6);
             }
         });
 

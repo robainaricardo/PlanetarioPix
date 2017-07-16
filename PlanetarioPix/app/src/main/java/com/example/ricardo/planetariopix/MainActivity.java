@@ -142,6 +142,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
             }
+            if (imagem.equals("5")) {
+                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img5);
+                Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
+                imViewFoto.setImageBitmap(pronto);
+            }
+            if (imagem.equals("6")) {
+                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img6);
+                Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
+                imViewFoto.setImageBitmap(pronto);
+            }
 
         }
     }
