@@ -1,5 +1,7 @@
 package com.example.ricardo.planetariopix;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,6 +14,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +25,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -76,9 +86,13 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
+            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 1280, 720, false);
+            Toast.makeText(getApplicationContext(),"redimencionou", Toast.LENGTH_SHORT).show();
             semFundo = colorToAlpha(imageBitmap);
+            Toast.makeText(getApplicationContext(),"Color to alpha show", Toast.LENGTH_SHORT).show();
             Intent it = new Intent(this, GaleriaActivity.class);
             startActivityForResult(it, ACTIVITY_2);
+            Toast.makeText(getApplicationContext(),"Chamaou o activity da galeria", Toast.LENGTH_SHORT).show();
 
         } else if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGEM) {
             Uri selectedImage = data.getData();
@@ -90,59 +104,72 @@ public class MainActivity extends AppCompatActivity {
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
             //até aqui é para obter a foto selecionada na galeria
-
+            thumbnail = Bitmap.createScaledBitmap(thumbnail, 2070, 1165, false);
+            Toast.makeText(getApplicationContext(),"redimencionou", Toast.LENGTH_SHORT).show();
             //tira o fundo da imagem
             semFundo = colorToAlpha(thumbnail);
+            Toast.makeText(getApplicationContext(),"Color to alpha show", Toast.LENGTH_SHORT).show();
 
             //chama tela para escolha do fundo
             Intent it = new Intent(this, GaleriaActivity.class);
             startActivityForResult(it, ACTIVITY_2);
-        } else if(resultCode == RESULT_OK && requestCode == ACTIVITY_2){//retorno da escolha do fundo
-            String imagem = data.getStringExtra("IMAGEM");
-            Toast.makeText(this, "Texto: "+imagem, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"Chamaou o activity da galeria", Toast.LENGTH_SHORT).show();
 
-            if(imagem.equals("1")){
+        } else if (resultCode == RESULT_OK && requestCode == ACTIVITY_2) {//retorno da escolha do fundo
+            String imagem = data.getStringExtra("IMAGEM");
+
+            if (imagem.equals("1")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
                 Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
             }
-            if(imagem.equals("2")){
+            if (imagem.equals("2")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
                 Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
             }
-            if(imagem.equals("3")){
+            if (imagem.equals("3")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
                 Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
             }
+            if (imagem.equals("4")) {
+                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img4);
+                Bitmap pronto = overlay(fundo, semFundo);
+                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
+                imViewFoto.setImageBitmap(pronto);
+            }
+
         }
     }
 
 
-
-    public static Bitmap overlay(Bitmap paramBitmap1, Bitmap paramBitmap2)
-    {
+    public static Bitmap overlay(Bitmap paramBitmap1, Bitmap paramBitmap2) {
         Bitmap localBitmap = Bitmap.createBitmap(paramBitmap1.getWidth(), paramBitmap1.getHeight(), paramBitmap1.getConfig());
         Canvas localCanvas = new Canvas(localBitmap);
         localCanvas.drawBitmap(paramBitmap1, 0.0F, 0.0F, null);
-        localCanvas.drawBitmap(paramBitmap2, 10.0F, 10.0F, null);
+        localCanvas.drawBitmap(paramBitmap2, 20.0F, 20.0F, null);
         return localBitmap;
     }
 
-    public static Bitmap colorToAlpha(Bitmap paramBitmap){
+    public static Bitmap colorToAlpha(Bitmap paramBitmap) {
         Bitmap localBitmap = paramBitmap.copy(Bitmap.Config.ARGB_8888, true);
         int k = localBitmap.getWidth();
         int m = localBitmap.getHeight();
+        int r,g,b;
         int i = 0;
-        while (i < m)
-        {
+        while (i < m) {
             int j = 0;
-            while (j < k)
-            {
+            while (j < k) {
                 int n = paramBitmap.getPixel(j, i);
+                r = Color.red(n);
+                g = Color.green(n);
+                b = Color.blue(n);
                 float localObject[] = new float[3];
-                Color.colorToHSV(n, (float[])localObject);
+                Color.colorToHSV(n, (float[]) localObject);
                 if ((localObject[0] >= 60.0F) && (localObject[0] <= 130.0F) && (localObject[1] >= 0.15D) && (localObject[2] >= 0.15D)) {
                     localBitmap.setPixel(j, i, 0);
                 }
@@ -162,12 +189,15 @@ public class MainActivity extends AppCompatActivity {
 
         paramBitmap = Bitmap.createBitmap(localBitmap.getWidth(), localBitmap.getHeight(), Bitmap.Config.ARGB_8888);
         Object localObject = new Canvas(paramBitmap);
-        ((Canvas)localObject).drawARGB(0, 0, 0, 0);
+        ((Canvas) localObject).drawARGB(0, 0, 0, 0);
         Paint localPaint = new Paint();
         localPaint.setAlpha(255);
-        ((Canvas)localObject).drawBitmap(localBitmap, 0.0F, 0.0F, localPaint);
+        ((Canvas) localObject).drawBitmap(localBitmap, 0.0F, 0.0F, localPaint);
         return paramBitmap;
     }
+
+
+
 
 
 
