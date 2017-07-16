@@ -1,5 +1,6 @@
 package com.example.ricardo.planetariopix;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -25,13 +26,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imViewFoto;
     private Button btTirarFoto;
     private Button btGaleria;
-
+    Uri URI;
     public Bitmap semFundo;
 
     @Override
@@ -123,36 +127,44 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                //MediaStore.Images.Media.insertImage(getContentResolver(), pronto, "planetarioPix.png" , "161717");
+
+                salvarImagem(pronto);
             }
             if (imagem.equals("2")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                salvarImagem(pronto);
             }
             if (imagem.equals("3")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                salvarImagem(pronto);
             }
             if (imagem.equals("4")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img4);
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                salvarImagem(pronto);
             }
             if (imagem.equals("5")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img5);
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                salvarImagem(pronto);
             }
             if (imagem.equals("6")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img6);
                 Bitmap pronto = overlay(fundo, semFundo);
                 Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
+                salvarImagem(pronto);
             }
 
         }
@@ -207,6 +219,25 @@ public class MainActivity extends AppCompatActivity {
         ((Canvas) localObject).drawBitmap(localBitmap, 0.0F, 0.0F, localPaint);
         return paramBitmap;
     }
+
+    public static void addImageToGallery(final String filePath, final Context context) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.MediaColumns.DATA, filePath);
+
+        context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    }
+
+    void salvarImagem(Bitmap pronto){
+        String imgSaved = MediaStore.Images.Media.insertImage(getContentResolver(),pronto,"teste.png", "drawing");
+        addImageToGallery(imgSaved, this);
+    }
+
+
+
 
 
 
