@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         btTirarFoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+
+
             }
         });
 
@@ -79,19 +81,32 @@ public class MainActivity extends AppCompatActivity {
 
     //método que chama a camera
     private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
+        //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        //    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        //}
+        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+        File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
     //retorno da foto
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 2070, 1165, false);
-            semFundo = colorToAlpha(imageBitmap);
+            //Bundle extras = data.getExtras();
+            //Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //Get our saved file into a bitmap object:
+            File file = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+            //Bitmap bitmap = decodeSampledBitmapFromFile(file.getAbsolutePath(), 1080, 760);
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+            //----------
+            //salvarImagem(bitmap);
+            //-------
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, 2070, 1165, false);
+            semFundo = colorToAlpha(bitmap);
             Intent it = new Intent(this, Galeria.class);
             startActivityForResult(it, ACTIVITY_2);
 
@@ -104,10 +119,15 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = c.getString(columnIndex);
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+            //----------
+            //salvarImagem(thumbnail);
+            //-------
+
             thumbnail = Bitmap.createScaledBitmap(thumbnail, 2070, 1165, false);
             semFundo = colorToAlpha(thumbnail);
             Intent it = new Intent(this, Galeria.class);
             startActivityForResult(it, ACTIVITY_2);
+
 
         } else if (resultCode == RESULT_OK && requestCode == ACTIVITY_2) {//retorno da escolha do fundo
             String imagem = data.getStringExtra("IMAGEM");
@@ -218,5 +238,41 @@ public class MainActivity extends AppCompatActivity {
         String imgSaved = MediaStore.Images.Media.insertImage(getContentResolver(),pronto,"teste.png", "drawing");
         addImageToGallery(imgSaved, this);
     }
+
+    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
+    { // BEST QUALITY MATCH
+
+        //First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize, Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        int inSampleSize = 1;
+
+        if (height > reqHeight)
+        {
+            inSampleSize = Math.round((float)height / (float)reqHeight);
+        }
+        int expectedWidth = width / inSampleSize;
+
+        if (expectedWidth > reqWidth)
+        {
+            //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+
+        options.inSampleSize = inSampleSize;
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeFile(path, options);
+    }
+
+
 
 }
