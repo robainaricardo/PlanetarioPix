@@ -3,21 +3,21 @@
 
     <item
         is-multidex="true"
+        jar="D:\Projetos\PlanetarioPix\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="D:\Projetos\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_02a8df3cf1eb8ec7571abcbc7f174f5cc72700b2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Ricardo\.android\build-cache\3855eff125b0d9ecabedf1192fc669172483d6e0\output\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="26.0.0"
         sha1="d4cf6227dd6a2ceff0f7dcf0c324380b7abf2c28">
         <dex dex="D:\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_da0399f63c2a48a194a15a334d2d0fcc0ae0359c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Ricardo\.android\build-cache\60ffa6092c95959ddc43867bc877ec55729f5743\output\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="26.0.0"
-        sha1="95519720620b553f63afc789beba9ad582807f7c">
-        <dex dex="D:\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2caf0725ba2941095be8766737035753ad45e10c\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -36,6 +36,24 @@
         revision="26.0.0"
         sha1="7e27a91a479812f9ed463bcd9fb41f2900c1f32e">
         <dex dex="D:\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_e2c071c78d6c60ad0afc728fab3098a1736d2448\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="D:\Projetos\PlanetarioPix\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="56147cb2ac1cef76ef7b679c731b8132a7d92ae2">
+        <dex dex="D:\Projetos\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_5cf2de2e684ed5c34300b7a8fff7b307d4775c09\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Ricardo\.android\build-cache\60ffa6092c95959ddc43867bc877ec55729f5743\output\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.0"
+        sha1="95519720620b553f63afc789beba9ad582807f7c">
+        <dex dex="D:\PlanetarioPix\app\build\intermediates\transforms\dex\debug\folders\1000\10\classes_2caf0725ba2941095be8766737035753ad45e10c\classes.dex" />
     </item>
     <item
         is-multidex="true"

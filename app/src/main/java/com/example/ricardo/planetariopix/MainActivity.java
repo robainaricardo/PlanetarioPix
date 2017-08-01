@@ -90,13 +90,10 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 1280, 720, false);
-            Toast.makeText(getApplicationContext(),"redimencionou", Toast.LENGTH_SHORT).show();
+            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 2070, 1165, false);
             semFundo = colorToAlpha(imageBitmap);
-            Toast.makeText(getApplicationContext(),"Color to alpha show", Toast.LENGTH_SHORT).show();
             Intent it = new Intent(this, Galeria.class);
             startActivityForResult(it, ACTIVITY_2);
-            Toast.makeText(getApplicationContext(),"Chamaou o activity da galeria", Toast.LENGTH_SHORT).show();
 
         } else if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGEM) {
             Uri selectedImage = data.getData();
@@ -107,18 +104,10 @@ public class MainActivity extends AppCompatActivity {
             String picturePath = c.getString(columnIndex);
             c.close();
             Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-            //até aqui é para obter a foto selecionada na galeria
-
             thumbnail = Bitmap.createScaledBitmap(thumbnail, 2070, 1165, false);
-            Toast.makeText(getApplicationContext(),"redimencionou", Toast.LENGTH_SHORT).show();
-            //tira o fundo da imagem
             semFundo = colorToAlpha(thumbnail);
-            Toast.makeText(getApplicationContext(),"Color to alpha show", Toast.LENGTH_SHORT).show();
-
-            //chama tela para escolha do fundo
             Intent it = new Intent(this, Galeria.class);
             startActivityForResult(it, ACTIVITY_2);
-            Toast.makeText(getApplicationContext(),"Chamaou o activity da galeria", Toast.LENGTH_SHORT).show();
 
         } else if (resultCode == RESULT_OK && requestCode == ACTIVITY_2) {//retorno da escolha do fundo
             String imagem = data.getStringExtra("IMAGEM");
@@ -126,30 +115,24 @@ public class MainActivity extends AppCompatActivity {
             if (imagem.equals("1")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
                 Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
-                //MediaStore.Images.Media.insertImage(getContentResolver(), pronto, "planetarioPix.png" , "161717");
-
                 salvarImagem(pronto);
             }
             if (imagem.equals("2")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
                 Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
                 salvarImagem(pronto);
             }
             if (imagem.equals("3")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
                 Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
                 salvarImagem(pronto);
             }
             if (imagem.equals("4")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img4);
                 Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
                 salvarImagem(pronto);
             }
@@ -163,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
             if (imagem.equals("6")) {
                 Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img6);
                 Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
                 imViewFoto.setImageBitmap(pronto);
                 salvarImagem(pronto);
             }
@@ -236,17 +218,5 @@ public class MainActivity extends AppCompatActivity {
         String imgSaved = MediaStore.Images.Media.insertImage(getContentResolver(),pronto,"teste.png", "drawing");
         addImageToGallery(imgSaved, this);
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
