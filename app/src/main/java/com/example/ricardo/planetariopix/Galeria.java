@@ -66,10 +66,15 @@ public class Galeria extends AppCompatActivity {
 
     }
 
-    void retorno(int imagem){
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("IMAGEM", ""+imagem);
-        setResult(RESULT_OK,returnIntent);
-        finish();
+    void retorno(int imagem) throws RuntimeException{
+        try {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("IMAGEM", ""+imagem);
+            setResult(RESULT_OK, returnIntent);
+            finish();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(),"ERRO AO RETORNAR FUNDO", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }

@@ -24,6 +24,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedOutputStream;
@@ -44,10 +47,18 @@ public class MainActivity extends AppCompatActivity {
     static final int GALERIA_IMAGEM = 2; //variavel da intent da Galeria
     static final int ACTIVITY_2 = 3; //Retorno da segunda activity
 
+    private SeekBar brilho;
     private ImageView imViewFoto;
     private Button btTirarFoto;
     private Button btGaleria;
+    private TextView brilhoView;
+    private ProgressBar carregando;
+
     Uri URI;
+
+    public double brilhoHsv;
+
+    public Bitmap original;
     public Bitmap semFundo;
 
     @Override
@@ -59,22 +70,45 @@ public class MainActivity extends AppCompatActivity {
         imViewFoto = (ImageView) findViewById(R.id.imViewFoto);
         btTirarFoto = (Button) findViewById(R.id.btTirarFoto);
         btGaleria = (Button) findViewById(R.id.btGaleria);
+        brilho = (SeekBar) findViewById(R.id.seekBrilho);
+        brilhoView = (TextView) findViewById(R.id.brilhoView);
+        carregando = (ProgressBar) findViewById(R.id.carregando);
+
+        brilhoHsv = 0.25D;
 
         btTirarFoto.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dispatchTakePictureIntent();
-
-
             }
         });
 
         btGaleria.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //chamar galeria
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, GALERIA_IMAGEM);
-
+                chamaGaleriaFotos();
             }
+        });
+
+        brilho.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 5;
+
+            public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
+                progress = progresValue;
+                //Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                brilhoHsv = progress*0.05D;
+                if (brilhoHsv < 0.05D)
+                    brilhoHsv = 0.05D;
+                brilhoView.setText(""+brilhoHsv);
+                //Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+            }
+
         });
 
     }
@@ -91,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
+    public void chamaGaleriaFotos(){
+        //chamar galeria
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, GALERIA_IMAGEM);
+    }
+
     //retorno da foto
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
@@ -105,10 +145,11 @@ public class MainActivity extends AppCompatActivity {
             //salvarImagem(bitmap);
             //-------
 
-            bitmap = Bitmap.createScaledBitmap(bitmap, 2070, 1165, false);
-            semFundo = colorToAlpha(bitmap);
-            Intent it = new Intent(this, Galeria.class);
-            startActivityForResult(it, ACTIVITY_2);
+            //bitmap = Bitmap.createScaledBitmap(bitmap, 2070, 1165, false);
+            //semFundo = colorToAlpha(bitmap);
+            //Intent it = new Intent(this, Galeria.class);
+            //startActivityForResult(it, ACTIVITY_2);
+            clearImage(bitmap, brilhoHsv);
 
         } else if (resultCode == RESULT_OK && requestCode == GALERIA_IMAGEM) {
             Uri selectedImage = data.getData();
@@ -118,58 +159,45 @@ public class MainActivity extends AppCompatActivity {
             int columnIndex = c.getColumnIndex(filePath[0]);
             String picturePath = c.getString(columnIndex);
             c.close();
-            Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+            Bitmap bitmap = (BitmapFactory.decodeFile(picturePath));
             //----------
             //salvarImagem(thumbnail);
             //-------
 
-            thumbnail = Bitmap.createScaledBitmap(thumbnail, 2070, 1165, false);
-            semFundo = colorToAlpha(thumbnail);
-            Intent it = new Intent(this, Galeria.class);
-            startActivityForResult(it, ACTIVITY_2);
+            //thumbnail = Bitmap.createScaledBitmap(thumbnail, 2070, 1165, false);
+            //semFundo = colorToAlpha(thumbnail);
+            //Intent it = new Intent(this, Galeria.class);
+            //startActivityForResult(it, ACTIVITY_2);
+            clearImage(bitmap, brilhoHsv);
 
 
         } else if (resultCode == RESULT_OK && requestCode == ACTIVITY_2) {//retorno da escolha do fundo
             String imagem = data.getStringExtra("IMAGEM");
-
+            Bitmap fundo;
             if (imagem.equals("1")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
-                Bitmap pronto = overlay(fundo, semFundo);
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img1);
+                finalizeImage(fundo);
             }
             if (imagem.equals("2")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
-                Bitmap pronto = overlay(fundo, semFundo);
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img2);
+                finalizeImage(fundo);
             }
             if (imagem.equals("3")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
-                Bitmap pronto = overlay(fundo, semFundo);
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img3);
+                finalizeImage(fundo);
             }
             if (imagem.equals("4")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img4);
-                Bitmap pronto = overlay(fundo, semFundo);
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img4);
+                finalizeImage(fundo);
             }
             if (imagem.equals("5")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img5);
-                Bitmap pronto = overlay(fundo, semFundo);
-                Toast.makeText(getApplicationContext(),"overlay oquei", Toast.LENGTH_SHORT).show();
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img5);
+                finalizeImage(fundo);
             }
             if (imagem.equals("6")) {
-                Bitmap fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img6);
-                Bitmap pronto = overlay(fundo, semFundo);
-                imViewFoto.setImageBitmap(pronto);
-                salvarImagem(pronto);
+                fundo = new BitmapFactory().decodeResource(getResources(), R.drawable.img6);
+                finalizeImage(fundo);
             }
-
         }
     }
 
@@ -178,11 +206,11 @@ public class MainActivity extends AppCompatActivity {
         Bitmap localBitmap = Bitmap.createBitmap(paramBitmap1.getWidth(), paramBitmap1.getHeight(), paramBitmap1.getConfig());
         Canvas localCanvas = new Canvas(localBitmap);
         localCanvas.drawBitmap(paramBitmap1, 0.0F, 0.0F, null);
-        localCanvas.drawBitmap(paramBitmap2, 20.0F, 20.0F, null);
+        localCanvas.drawBitmap(paramBitmap2, 0.0F, 0.0F, null);
         return localBitmap;
     }
 
-    public static Bitmap colorToAlpha(Bitmap paramBitmap) {
+    public static Bitmap colorToAlpha(Bitmap paramBitmap, double brilhoHsv) {
         Bitmap localBitmap = paramBitmap.copy(Bitmap.Config.ARGB_8888, true);
         int k = localBitmap.getWidth();
         int m = localBitmap.getHeight();
@@ -196,8 +224,8 @@ public class MainActivity extends AppCompatActivity {
                 g = Color.green(n);
                 b = Color.blue(n);
                 float localObject[] = new float[3];
-                Color.colorToHSV(n, (float[]) localObject);
-                if ((localObject[0] >= 60.0F) && (localObject[0] <= 130.0F) && (localObject[1] >= 0.15D) && (localObject[2] >= 0.15D)) {
+                Color.colorToHSV(n, (float[]) localObject);//60n130n15n15
+                if ((localObject[0] >= 60.0F) && (localObject[0] <= 130.0F) && (localObject[1] >= brilhoHsv) && (localObject[2] >= brilhoHsv)) {
                     localBitmap.setPixel(j, i, 0);
                 }
                 j += 1;
@@ -239,8 +267,8 @@ public class MainActivity extends AppCompatActivity {
         addImageToGallery(imgSaved, this);
     }
 
-    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight)
-    { // BEST QUALITY MATCH
+    public static Bitmap decodeSampledBitmapFromFile(String path, int reqWidth, int reqHeight){
+        // BEST QUALITY MATCH
 
         //First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -273,6 +301,31 @@ public class MainActivity extends AppCompatActivity {
         return BitmapFactory.decodeFile(path, options);
     }
 
+    public void clearImage(Bitmap bitmap, double brilhoHsv) throws RuntimeException{
+        carregando.setVisibility(View.VISIBLE);
+        try {
+            original = Bitmap.createScaledBitmap(bitmap, 2070, 1165, false);
+            semFundo = colorToAlpha(original, brilhoHsv);
+            carregando.setVisibility(View.INVISIBLE);
+            Intent it = new Intent(this, Galeria.class);
+            startActivityForResult(it, ACTIVITY_2);
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"ERRO AO LIMPAR IMAGEM", Toast.LENGTH_SHORT).show();
+            carregando.setVisibility(View.INVISIBLE);
+            chamaGaleriaFotos();
+        }
+    }
+
+    public void finalizeImage(Bitmap bitmap){
+            Bitmap pronto = overlay(bitmap, semFundo);
+            imViewFoto.setImageBitmap(pronto);
+            salvarImagem(pronto);
+    }
+
+
 
 
 }
+
+//Toast.makeText(getApplicationContext(),"ERRO AO FINALIZAR IMAGEM", Toast.LENGTH_SHORT).show();

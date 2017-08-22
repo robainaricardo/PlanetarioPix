@@ -7,107 +7,110 @@
     tools:context="com.example.ricardo.planetariopix.Galeria">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="570dp"
+        android:layout_height="300dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="1">
+            android:weightSum="1"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="0dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="193dp"
-                    app:srcCompat="@drawable/img1"
                     android:id="@+id/imb1"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:scaleType="fitXY"
-                    android:layout_weight="1" />
-
-                <ImageButton
                     android:layout_width="match_parent"
                     android:layout_height="193dp"
-                    app:srcCompat="@drawable/img2"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/simg1" />
+
+                <ImageButton
                     android:id="@+id/imb2"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="193dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:layout_weight="1" />
+                    app:srcCompat="@drawable/simg2" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="193dp"
-                    app:srcCompat="@drawable/img3"
                     android:id="@+id/imb3"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="193dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:layout_weight="1" />
+                    app:srcCompat="@drawable/simg3" />
 
 
                 <ImageButton
+                    android:id="@+id/imb4"
                     android:layout_width="match_parent"
                     android:layout_height="193dp"
-                    app:srcCompat="@drawable/img4"
-                    android:id="@+id/imb4"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:layout_weight="1" />
+                    app:srcCompat="@drawable/simg4" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
                 <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="193dp"
-                    app:srcCompat="@drawable/img5"
                     android:id="@+id/imb5"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="193dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:layout_weight="1" />
+                    app:srcCompat="@drawable/simg5" />
 
 
                 <ImageButton
+                    android:id="@+id/imb6"
                     android:layout_width="match_parent"
                     android:layout_height="193dp"
-                    app:srcCompat="@drawable/img6"
-                    android:id="@+id/imb6"
-                    android:layout_marginTop="10dp"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:scaleType="fitXY"
-                    android:layout_weight="1" />
+                    app:srcCompat="@drawable/simg6" />
             </LinearLayout>
-
 
 
         </LinearLayout>
